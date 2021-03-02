@@ -44,18 +44,23 @@
     msg.text = document.querySelector('[name="text"]').value;
 
     function populateVoices() {
+      //getting the voice presets
       voices = this.getVoices();
+      //setting the presets to the menu
       voicesDropdown.innerHTML = voices
+      // filtering for only english voices
       .filter(voice => voice.lang.includes('en'))
       .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
       .join('');
     }
 
+    //configuring the voice type with the dropdown menu
     function setVoice() {
       msg.voice = voices.find(voice => voice.name === this.value);
       toggle();
     }
 
+    //triggers the speech to start over when selecting a new voice
     function toggle(startOver = true) {
       speechSynthesis.cancel();
       if(startOver) {
@@ -63,8 +68,8 @@
       }
     }
 
+    // setting rate/pitch
     function setOption() {
-      console.log(this.name, this.value);
       msg[this.name] = this.value;
       toggle();
     }
@@ -73,6 +78,7 @@
     voicesDropdown.addEventListener('change', setVoice);
     options.forEach(option => option.addEventListener('change', setOption));
     speakButton.addEventListener('click', toggle);
+    // inline function to be able to use toggle(false)
     stopButton.addEventListener('click', () => toggle(false));
   </script>
 
